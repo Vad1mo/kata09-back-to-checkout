@@ -1,6 +1,7 @@
 package com.clean.code.checkout;
 
 import static java.util.stream.Collectors.*;
+import static java.util.Arrays.asList;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,8 +40,8 @@ public class CheckoutSystem {
 		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
 	}
 
-	public int scan(Item itemForCheckout) {
-		scannedItems.add(itemForCheckout);
+	public int scan(Item... itemForCheckout) {
+		scannedItems.addAll(asList(itemForCheckout));
 		return scannedItems.size();
 	}
 }
