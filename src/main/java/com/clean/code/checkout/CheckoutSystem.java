@@ -1,7 +1,9 @@
 package com.clean.code.checkout;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import static java.util.stream.Collectors.summingInt;
 
 public class CheckoutSystem {
 	
@@ -13,7 +15,8 @@ public class CheckoutSystem {
 		itemPrices.put("B", 30);
 	}
 
-	public int calculateTotalPrice(String itemAtCheckout) {
-		return itemPrices.getOrDefault(itemAtCheckout, 0);
+	public int calculateTotalPrice(List<String> itemsAtCheckout) {
+		return itemsAtCheckout.stream()
+				              .collect(summingInt(item -> itemPrices.get(item)));
 	}
 }

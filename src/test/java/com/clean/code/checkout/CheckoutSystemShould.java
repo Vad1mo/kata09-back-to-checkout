@@ -10,13 +10,13 @@ public class CheckoutSystemShould {
 	@Test
 	public void return_50_for_item_A(){
 		CheckoutSystem checkoutSystem = new CheckoutSystem();
-		assertEquals(50, checkoutSystem.calculateTotalPrice("A"));
+		assertEquals(50, checkoutSystem.calculateTotalPrice(asList("A")));
 	}
 	
 	@Test
 	public void return_30_for_item_B(){
 		CheckoutSystem checkoutSystem = new CheckoutSystem();
-		assertEquals(30, checkoutSystem.calculateTotalPrice("B"));
+		assertEquals(30, checkoutSystem.calculateTotalPrice(asList("B")));
 	}
 	
 	@Test
