@@ -1,0 +1,24 @@
+# Target Folder
+**/target/
+
+**/bin/*
+
+**/.settings/**
+
+# Project & Classpath files
+.project
+**/.classpath
+
+
+#Class Files
+*.class
+
+# Eclipse Preferences
+*.prefs
+
+#Ignore the log files
+**/**.log
+/target/
+
+/.classpath
+/bin/
