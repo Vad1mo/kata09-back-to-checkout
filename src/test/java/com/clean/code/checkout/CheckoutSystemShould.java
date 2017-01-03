@@ -21,7 +21,8 @@ public class CheckoutSystemShould {
 		checkoutSystem = new CheckoutSystem();
 		Discount discount = new Discount(3, 130);
 		itemA = new Item("A", 50, discount);
-		itemB = new Item("B", 30);
+		discount = new Discount(2, 45);
+		itemB = new Item("B", 30, discount);
 	}
 	
 	@After
