@@ -16,20 +16,25 @@ public class PricingRules {
 		this.discount = discount;		
 	}
 	
-	public Integer getPrice(String itemCode, Integer quantity){
-		if(this.itemCode.equals(itemCode)){
-			if(Objects.isNull(discount) || quantity < discount.getQuantity()){
-				return quantity * price;
-			}else{
-				return calculatePriceWithApplicableDiscount(quantity);
-			}
+	public Integer getPrice(Integer quantity){
+		if(Objects.isNull(discount) || quantity < discount.getQuantity()){
+			return quantity * price;
+		}else{
+			return calculatePriceWithApplicableDiscount(quantity);
 		}
-		return null;
 	}
 	
 	private Integer calculatePriceWithApplicableDiscount(Integer itemQuantity) {				
 		int quantityApplicableForDiscount = itemQuantity / discount.getQuantity();
 		int quantityNotApplicableForDiscount = itemQuantity % discount.getQuantity();		
 		return quantityApplicableForDiscount * discount.getPrice() + quantityNotApplicableForDiscount * price;
+	}
+
+	/**
+	 * Getter for itemCode.
+	 * @return String
+	 */
+	public String getItemCode() {
+		return itemCode;
 	}
 }

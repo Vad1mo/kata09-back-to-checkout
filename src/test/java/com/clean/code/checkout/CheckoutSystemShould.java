@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.clean.code.checkout.item.Discount;
 import com.clean.code.checkout.item.Item;
+import com.clean.code.checkout.price.PricingRules;
 
 public class CheckoutSystemShould {
 	
@@ -17,12 +18,17 @@ public class CheckoutSystemShould {
 	private Item itemB;
 	
 	@Before
-	public void setUp(){
-		checkoutSystem = new CheckoutSystem();
+	public void setUp(){				
+		itemA = new Item("A");
+		itemB = new Item("B");
+		
 		Discount discount = new Discount(3, 130);
-		itemA = new Item("A", 50, discount);
+		PricingRules pricingForItemA = new PricingRules("A", 50, discount);
+		
 		discount = new Discount(2, 45);
-		itemB = new Item("B", 30, discount);
+		PricingRules pricingForItemB = new PricingRules("B", 30, discount);
+		
+		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB));		
 	}
 	
 	@After

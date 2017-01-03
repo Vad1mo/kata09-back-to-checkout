@@ -45,4 +45,12 @@ public class Item {
 	public String getCode() {
 		return code;
 	}
+
+	/**
+	 * Getter for quantity.
+	 * @return Integer
+	 */
+	public Integer getQuantity() {
+		return quantity;
+	}
 }
