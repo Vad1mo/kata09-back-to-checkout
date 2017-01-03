@@ -13,10 +13,12 @@ import com.clean.code.checkout.price.PricingRules;
 
 public class CheckoutSystem {
 	
+	private Set<Item> scannedItems;
 	private List<PricingRules> pricingRules;
 	
 	public CheckoutSystem(List<PricingRules> pricingRules){
 		this.pricingRules = pricingRules;
+		scannedItems = new HashSet<>();
 	}
 	
 	public int calculateTotalPrice(List<Item> itemsAtCheckout) {
@@ -35,5 +37,10 @@ public class CheckoutSystem {
 
 	private Integer getItemPrice(Map<ItemCodeEnum, PricingRules> itemPricingRules, Item item) {
 		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
+	}
+
+	public Integer scan(Item itemForCheckout) {
+		scannedItems.add(itemForCheckout);
+		return scannedItems.size();
 	}
 }
