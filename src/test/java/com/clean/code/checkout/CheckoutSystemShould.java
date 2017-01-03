@@ -95,4 +95,9 @@ public class CheckoutSystemShould {
 	public void return_1_whens_only_1_item_is_scanned(){
 		assertEquals(1, checkoutSystem.scan(itemA));
 	}
+	
+	@Test
+	public void return_2_whens_only_2_items_are_scanned(){
+		assertEquals(2, checkoutSystem.scan(itemA, itemB));
+	}
 }
