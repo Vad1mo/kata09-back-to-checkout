@@ -39,7 +39,7 @@ public class CheckoutSystem {
 		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
 	}
 
-	public Integer scan(Item itemForCheckout) {
+	public int scan(Item itemForCheckout) {
 		scannedItems.add(itemForCheckout);
 		return scannedItems.size();
 	}
