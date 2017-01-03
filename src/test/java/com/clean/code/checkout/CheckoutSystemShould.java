@@ -18,12 +18,14 @@ public class CheckoutSystemShould {
 	private Item itemA;
 	private Item itemB;
 	private Item itemC;
+	private Item itemD;
 	
 	@Before
 	public void setUp(){				
 		itemA = new Item(ItemCodeEnum.A);
 		itemB = new Item(ItemCodeEnum.B);
 		itemC = new Item(ItemCodeEnum.C);
+		itemD = new Item(ItemCodeEnum.D);
 		
 		Discount discount = new Discount(3, 130);
 		PricingRules pricingForItemA = new PricingRules(ItemCodeEnum.A, 50, discount);
@@ -32,8 +34,10 @@ public class CheckoutSystemShould {
 		PricingRules pricingForItemB = new PricingRules(ItemCodeEnum.B, 30, discount);
 		
 		PricingRules pricingForItemC = new PricingRules(ItemCodeEnum.C, 20, null);
+		PricingRules pricingForItemD = new PricingRules(ItemCodeEnum.D, 15, null);
 		
-		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB, pricingForItemC));		
+		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB, 
+												   pricingForItemC, pricingForItemD));		
 	}
 	
 	@After
@@ -80,5 +84,10 @@ public class CheckoutSystemShould {
 	@Test
 	public void return_195_for_3_item_A_and_2_item_B_and_1_item_C(){
 		assertEquals(195, checkoutSystem.calculateTotalPrice(asList(itemA, itemC, itemA, itemB, itemA, itemB)));
+	}
+	
+	@Test
+	public void return_195_for_3_item_A_and_1_item_each_of_B_C_and_D(){
+		assertEquals(195, checkoutSystem.calculateTotalPrice(asList(itemC, itemA, itemD, itemA, itemA, itemB)));
 	}
 }
