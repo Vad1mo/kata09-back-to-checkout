@@ -90,4 +90,9 @@ public class CheckoutSystemShould {
 	public void return_195_for_3_item_A_and_1_item_each_of_B_C_and_D(){
 		assertEquals(195, checkoutSystem.calculateTotalPrice(asList(itemC, itemA, itemD, itemA, itemA, itemB)));
 	}
+	
+	@Test
+	public void return_1_whens_only_1_item_is_scanned(){
+		assertEquals(1, checkoutSystem.scan(itemA));
+	}
 }
