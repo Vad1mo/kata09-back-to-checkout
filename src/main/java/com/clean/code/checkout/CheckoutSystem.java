@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.clean.code.checkout.item.Item;
+import com.clean.code.checkout.item.ItemCodeEnum;
 import com.clean.code.checkout.price.PricingRules;
 
 public class CheckoutSystem {
@@ -23,7 +25,7 @@ public class CheckoutSystem {
 		
 		Set<Item> itemsWithQuantity = new HashSet<>(itemsAtCheckout);
 		
-		Map<String, PricingRules> itemPricingRules = pricingRules.stream()
+		Map<ItemCodeEnum, PricingRules> itemPricingRules = pricingRules.stream()
 																 .collect(
 																	toMap(PricingRules::getItemCode, 
 																		  pricingRule -> pricingRule));
@@ -31,11 +33,7 @@ public class CheckoutSystem {
 				                .collect(summingInt(item -> getItemPrice(itemPricingRules, item)));
 	}
 
-	private Integer getItemPrice(Map<String, PricingRules> itemPricingRules, Item item) {
-		return getItemPricingRule(itemPricingRules, item).getPrice(item.getQuantity());
-	}
-
-	private PricingRules getItemPricingRule(Map<String, PricingRules> itemPricingRules, Item item) {
-		return itemPricingRules.get(item.getCode());
+	private Integer getItemPrice(Map<ItemCodeEnum, PricingRules> itemPricingRules, Item item) {
+		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
 	}
 }

@@ -3,11 +3,11 @@ package com.clean.code.checkout.item;
 
 public class Item {
 	
-	private String code;	
+	private ItemCodeEnum code;	
 	private Integer quantity = 0;
 	
 	
-	public Item(String code){
+	public Item(ItemCodeEnum code){
 		this.code = code;
 	}
 
@@ -40,9 +40,9 @@ public class Item {
 
 	/**
 	 * Getter for code.
-	 * @return String
+	 * @return ItemCodeEnum
 	 */
-	public String getCode() {
+	public ItemCodeEnum getCode() {
 		return code;
 	}
 

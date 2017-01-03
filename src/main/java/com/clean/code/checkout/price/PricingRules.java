@@ -3,14 +3,15 @@ package com.clean.code.checkout.price;
 import java.util.Objects;
 
 import com.clean.code.checkout.item.Discount;
+import com.clean.code.checkout.item.ItemCodeEnum;
 
 public class PricingRules {
 	
-	private String itemCode;	
+	private ItemCodeEnum itemCode;	
 	private Integer price = 0;	
 	private Discount discount;
 	
-	public PricingRules(String itemCode, Integer price, Discount discount) {
+	public PricingRules(ItemCodeEnum itemCode, Integer price, Discount discount) {
 		this.itemCode = itemCode;
 		this.price = price;
 		this.discount = discount;		
@@ -32,9 +33,9 @@ public class PricingRules {
 
 	/**
 	 * Getter for itemCode.
-	 * @return String
+	 * @return ItemCodeEnum
 	 */
-	public String getItemCode() {
+	public ItemCodeEnum getItemCode() {
 		return itemCode;
 	}
 }
