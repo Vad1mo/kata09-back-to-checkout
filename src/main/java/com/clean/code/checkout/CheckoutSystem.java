@@ -22,26 +22,28 @@ public class CheckoutSystem {
 		scannedItems = new HashSet<>();
 	}
 	
-	public int calculateTotalPrice(List<Item> itemsAtCheckout) {
-		
-		itemsAtCheckout.stream().forEach(item -> item.increaseQuantity());
-		
-		Set<Item> itemsWithQuantity = new HashSet<>(itemsAtCheckout);
+	public void scan(Item... itemsForCheckout) {
+		List<Item> checkedOutItems = asList(itemsForCheckout);
+		checkedOutItems.stream().forEach(item -> item.increaseQuantity());
+		scannedItems.addAll(checkedOutItems);
+	}
+	
+	public int calculateTotalPrice() {
 		
 		Map<ItemCodeEnum, PricingRules> itemPricingRules = pricingRules.stream()
 																 .collect(
 																	toMap(PricingRules::getItemCode, 
 																		  pricingRule -> pricingRule));
-		return itemsWithQuantity.stream()
+		return scannedItems.stream()
 				                .collect(summingInt(item -> getItemPrice(itemPricingRules, item)));
 	}
 
+	
 	private Integer getItemPrice(Map<ItemCodeEnum, PricingRules> itemPricingRules, Item item) {
 		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
 	}
-
-	public int scan(Item... itemForCheckout) {
-		scannedItems.addAll(asList(itemForCheckout));
+	
+	public int getScannedItemCount(){
 		return scannedItems.size();
 	}
 }
