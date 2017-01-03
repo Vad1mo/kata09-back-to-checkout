@@ -42,4 +42,9 @@ public class CheckoutSystemShould {
 	public void return_80_for_items_A_and_B(){
 		assertEquals(80, checkoutSystem.calculateTotalPrice(asList(itemA, itemB)));
 	}
+	
+	@Test
+	public void return_130_for_three_items_A(){
+		assertEquals(130, checkoutSystem.calculateTotalPrice(asList(itemA, itemA, itemA)));
+	}
 }
