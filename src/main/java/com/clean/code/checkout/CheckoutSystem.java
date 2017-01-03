@@ -1,8 +1,19 @@
 package com.clean.code.checkout;
 
-public class CheckoutSystem {
+import java.util.HashMap;
+import java.util.Map;
 
-	public int calculateTotalPrice(String item) {
-		return "B".equals(item) ? 30 : 50;
+public class CheckoutSystem {
+	
+	private Map<String, Integer> itemPrices;
+	
+	public CheckoutSystem(){
+		itemPrices = new HashMap<>();
+		itemPrices.put("A", 50);
+		itemPrices.put("B", 30);
+	}
+
+	public int calculateTotalPrice(String itemAtCheckout) {
+		return itemPrices.getOrDefault(itemAtCheckout, 0);
 	}
 }
