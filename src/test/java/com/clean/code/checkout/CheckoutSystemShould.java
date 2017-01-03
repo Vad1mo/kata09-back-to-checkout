@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.clean.code.checkout.item.Discount;
 import com.clean.code.checkout.item.Item;
 
 public class CheckoutSystemShould {
@@ -18,7 +19,8 @@ public class CheckoutSystemShould {
 	@Before
 	public void setUp(){
 		checkoutSystem = new CheckoutSystem();
-		itemA = new Item("A", 50, 3, 130);
+		Discount discount = new Discount(3, 130);
+		itemA = new Item("A", 50, discount);
 		itemB = new Item("B", 30);
 	}
 	

@@ -1,12 +1,13 @@
 package com.clean.code.checkout.item;
 
+import java.util.Objects;
+
 public class Item {
 	
 	private String code;	
 	private Integer price;	
 	private Integer quantity = 0;
-	private Integer discountableQuantity = 0;
-	private Integer discountPrice = 0;
+	private Discount discount;
 	
 	
 	public Item(String code, Integer price){
@@ -14,15 +15,14 @@ public class Item {
 		this.price = price;
 	}
 	
-	public Item(String code, Integer price, Integer discountableQuantity, Integer discountPrice){
+	public Item(String code, Integer price, Discount discount){
 		this.code = code;
 		this.price = price;
-		this.discountableQuantity = discountableQuantity;
-		this.discountPrice = discountPrice;
+		this.discount = discount;
 	}
 	
 	public Integer getPrice(){
-		if(discountableQuantity == 0 || quantity < discountableQuantity){
+		if(Objects.isNull(discount) || quantity < discount.getQuantity()){
 			return quantity * price;
 		}else{
 			return calculatePriceWithApplicableDiscount();
@@ -30,9 +30,9 @@ public class Item {
 	}
 	
 	private Integer calculatePriceWithApplicableDiscount() {				
-		int quantityApplicableForDiscount = quantity / discountableQuantity;
-		int quantityNotApplicableForDiscount = quantity % discountableQuantity;		
-		return quantityApplicableForDiscount * discountPrice + quantityNotApplicableForDiscount * price;
+		int quantityApplicableForDiscount = quantity / discount.getQuantity();
+		int quantityNotApplicableForDiscount = quantity % discount.getQuantity();		
+		return quantityApplicableForDiscount * discount.getPrice() + quantityNotApplicableForDiscount * price;
 	}
 	
 	public void increaseQuantity(){

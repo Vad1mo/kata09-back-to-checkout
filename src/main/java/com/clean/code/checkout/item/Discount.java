@@ -9,4 +9,20 @@ public class Discount {
 		this.quantity = quantity;
 		this.price = price;		
 	}
+
+	/**
+	 * Getter for quantity.
+	 * @return Integer
+	 */
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	/**
+	 * Getter for price.
+	 * @return Integer
+	 */
+	public Integer getPrice() {
+		return price;
+	}
 }
