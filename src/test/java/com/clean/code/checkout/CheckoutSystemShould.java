@@ -64,12 +64,6 @@ public class CheckoutSystemShould {
 	}
 	
 	@Test
-	public void return_80_for_items_A_and_B(){
-		checkoutSystem.scan(itemA, itemB);
-		assertEquals(80, checkoutSystem.calculateTotalPrice());
-	}
-	
-	@Test
 	public void return_130_for_three_items_A(){
 		checkoutSystem.scan(itemA, itemA, itemA);
 		assertEquals(130, checkoutSystem.calculateTotalPrice());
@@ -82,27 +76,27 @@ public class CheckoutSystemShould {
 	}
 	
 	@Test
-	public void return_225_for_four_item_A_and_2_item_B(){
+	public void return_240_for_four_item_A_and_2_item_B(){
 		checkoutSystem.scan(itemA, itemA, itemA, itemA, itemB, itemB);
-		assertEquals(225, checkoutSystem.calculateTotalPrice());
+		assertEquals(240, checkoutSystem.calculateTotalPrice());
 	}
 	
 	@Test
-	public void return_255_for_four_item_A_and_3_item_B(){
+	public void return_260_for_four_item_A_and_3_item_B(){
 		checkoutSystem.scan(itemA, itemA, itemA, itemA, itemB, itemB, itemB);
-		assertEquals(255, checkoutSystem.calculateTotalPrice());
+		assertEquals(260, checkoutSystem.calculateTotalPrice());
 	}
 	
 	@Test
-	public void return_195_for_3_item_A_and_2_item_B_and_1_item_C(){
+	public void return_210_for_3_item_A_and_2_item_B_and_1_item_C(){
 		checkoutSystem.scan(itemA, itemC, itemA, itemB, itemA, itemB);
-		assertEquals(195, checkoutSystem.calculateTotalPrice());
+		assertEquals(210, checkoutSystem.calculateTotalPrice());
 	}
 	
 	@Test
-	public void return_195_for_3_item_A_and_1_item_each_of_B_C_and_D(){
+	public void return_205_for_3_item_A_and_1_item_each_of_B_C_and_D(){
 		checkoutSystem.scan(itemC, itemA, itemD, itemA, itemA, itemB);
-		assertEquals(195, checkoutSystem.calculateTotalPrice());
+		assertEquals(205, checkoutSystem.calculateTotalPrice());
 	}
 	
 	@Test

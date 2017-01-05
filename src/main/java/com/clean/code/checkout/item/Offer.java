@@ -17,28 +17,19 @@ public class Offer {
 		this.price = price;
 	}
 
-	public Integer getPrice(){		
-		return price;		
-	}
-
 	public Integer getPriceAfterOffers(Set<Item> scannedItems) {
-		Map<ItemCodeEnum, Item> items = scannedItems.stream().collect(toMap(Item::getCode, item -> item));
-
-		ItemCodeEnum itemCodeHavingLeastQuantity = getItemWIthLeastQuantity(items);		
-		Item itemWithLeastQuantity = items.get(itemCodeHavingLeastQuantity);
-		List<Item> otherApplicableItems = scannedItems.stream()
-													  .filter(item -> item.getCode() != itemCodeHavingLeastQuantity 
-													  				&& itemCodes.contains(item.getCode()))
-													  .collect(toList());
 		
-		otherApplicableItems.stream().forEach(item -> item.adjustQuantity(-itemWithLeastQuantity.getQuantity()));
+		Map<ItemCodeEnum, Item> items = scannedItems.stream().collect(toMap(Item::getCode, item -> item));
+		
+		Item itemWithLeastQuantity = items.get(getItemCodeWithLeastQuantity(items));
+		
+		adjustQuantityForOfferItems(scannedItems, itemWithLeastQuantity);
 		
 		scannedItems.remove(itemWithLeastQuantity);
 		return itemWithLeastQuantity.getQuantity() * price;
 	}
 
-	
-	protected ItemCodeEnum getItemWIthLeastQuantity(Map<ItemCodeEnum, Item> items) {
+	protected ItemCodeEnum getItemCodeWithLeastQuantity(Map<ItemCodeEnum, Item> items) {
 		Map<ItemCodeEnum, Integer> sortedMap = new HashMap<>();
 		Map<ItemCodeEnum, Integer> itemToQuantity = items.entrySet().stream()
 				.filter(itemEntry -> itemCodes.contains(itemEntry.getKey())).collect(toMap(itemEntry -> itemEntry.getKey(), itemEntry -> itemEntry.getValue().getQuantity()));
@@ -48,7 +39,20 @@ public class Offer {
 		
 		return getFirstKey(sortedMap);
 	}
+	
+	protected void adjustQuantityForOfferItems(Set<Item> scannedItems, Item itemWithLeastQuantity) {
+		List<Item> otherApplicableItems = scannedItems.stream()
+													  .filter(item -> checkForOtherOfferItems(itemWithLeastQuantity, item))
+													  .collect(toList());
+		
+		otherApplicableItems.stream().forEach(item -> item.adjustQuantity(-itemWithLeastQuantity.getQuantity()));
+	}
 
+	protected boolean checkForOtherOfferItems(Item itemWithLeastQuantity, Item item) {
+		return item.getCode() != itemWithLeastQuantity.getCode() && itemCodes.contains(item.getCode());
+	}
+	
+	
 	private ItemCodeEnum getFirstKey(Map<ItemCodeEnum, Integer> sortedMap) {
 		return (ItemCodeEnum) sortedMap.keySet().toArray()[0];
 	}
