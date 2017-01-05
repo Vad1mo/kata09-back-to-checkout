@@ -1,11 +1,14 @@
 package com.clean.code.checkout.item;
 
+import static java.util.stream.Collectors.toMap;
+import static java.util.Collections.min;
+import static java.util.Comparator.comparingInt;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import static java.util.stream.Collectors.*;
 
 public class Offer {
 	
@@ -17,43 +20,50 @@ public class Offer {
 		this.price = price;
 	}
 
-	public Integer getPriceAfterOffers(Set<Item> scannedItems) {
+
+	public Integer getPrice(Set<Item> itemsAtCheckout) {		
+		Map<ItemCodeEnum, Integer> offerItemsWithQuantity = itemsAtCheckout.stream()
+														    .filter(item -> itemCodes.contains(item.getCode()))
+														    .collect(toMap(Item::getCode, Item::getQuantity));
 		
-		Map<ItemCodeEnum, Item> items = scannedItems.stream().collect(toMap(Item::getCode, item -> item));
-		
-		Item itemWithLeastQuantity = items.get(getItemCodeWithLeastQuantity(items));
-		
-		adjustQuantityForOfferItems(scannedItems, itemWithLeastQuantity);
-		
-		scannedItems.remove(itemWithLeastQuantity);
-		return itemWithLeastQuantity.getQuantity() * price;
+		return areAllOfferItemsPresent(offerItemsWithQuantity) 
+				? calculatePrice(itemsAtCheckout, offerItemsWithQuantity) : 0;		
 	}
 
-	protected ItemCodeEnum getItemCodeWithLeastQuantity(Map<ItemCodeEnum, Item> items) {
-		Map<ItemCodeEnum, Integer> sortedMap = new HashMap<>();
-		Map<ItemCodeEnum, Integer> itemToQuantity = items.entrySet().stream()
-				.filter(itemEntry -> itemCodes.contains(itemEntry.getKey())).collect(toMap(itemEntry -> itemEntry.getKey(), itemEntry -> itemEntry.getValue().getQuantity()));
-		
-		itemToQuantity.entrySet().stream().sorted(Map.Entry.<ItemCodeEnum, Integer> comparingByValue()).forEachOrdered(
-				itemQuantityEntry -> sortedMap.put(itemQuantityEntry.getKey(), itemQuantityEntry.getValue()));
-		
-		return getFirstKey(sortedMap);
-	}
 	
-	protected void adjustQuantityForOfferItems(Set<Item> scannedItems, Item itemWithLeastQuantity) {
-		List<Item> otherApplicableItems = scannedItems.stream()
-													  .filter(item -> checkForOtherOfferItems(itemWithLeastQuantity, item))
-													  .collect(toList());
+	protected Integer calculatePrice(Set<Item> itemsAtCheckout, Map<ItemCodeEnum, Integer> offerItemsWithQuantity) {
 		
-		otherApplicableItems.stream().forEach(item -> item.adjustQuantity(-itemWithLeastQuantity.getQuantity()));
+		Map<ItemCodeEnum, Item> itemCodeToItems = itemsAtCheckout.stream()
+																 .filter(item -> itemCodes.contains(item.getCode()))
+																 .collect(toMap(Item::getCode, item -> item));
+		
+		Item itemWithLeastQuantity = itemCodeToItems.get(itemCodeWithLeastQuantity(offerItemsWithQuantity));
+		
+		Integer calculatedPrice = itemWithLeastQuantity.getQuantity() * price;
+		
+		updateQuantityAfterOfferApplication(itemsAtCheckout, itemWithLeastQuantity.getQuantity());
+		itemWithLeastQuantity.resetQuantity(); //To avoid reprocessing of item for price calculation.
+		
+		return calculatedPrice;
 	}
 
-	protected boolean checkForOtherOfferItems(Item itemWithLeastQuantity, Item item) {
-		return item.getCode() != itemWithLeastQuantity.getCode() && itemCodes.contains(item.getCode());
+	
+	private boolean areAllOfferItemsPresent(Map<ItemCodeEnum, Integer> offerItemsWithQuantity) {
+		return offerItemsWithQuantity.size() == itemCodes.size();
 	}
+
 	
+	private void updateQuantityAfterOfferApplication(Set<Item> scannedItems, Integer quantity) {
+		scannedItems.stream()
+		  			.filter(item -> checkForOfferItems(item.getCode()))
+		  			.forEach(item -> item.adjustQuantity(-quantity));		
+	}
+
+	protected boolean checkForOfferItems(ItemCodeEnum itemCodeEnum) {
+		return itemCodes.contains(itemCodeEnum);
+	}	
 	
-	private ItemCodeEnum getFirstKey(Map<ItemCodeEnum, Integer> sortedMap) {
-		return (ItemCodeEnum) sortedMap.keySet().toArray()[0];
+	private ItemCodeEnum itemCodeWithLeastQuantity(Map<ItemCodeEnum, Integer> itemCodeToQuantity) {
+		return min(itemCodeToQuantity.entrySet(), comparingInt(Entry::getValue)).getKey();
 	}
 }

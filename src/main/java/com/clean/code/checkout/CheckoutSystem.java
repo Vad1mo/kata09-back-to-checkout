@@ -20,6 +20,7 @@ public class CheckoutSystem {
 	private List<PricingRules> pricingRules;
 	private List<Offer> offers;
 	
+	
 	public CheckoutSystem(List<PricingRules> pricingRules, List<Offer> offers){
 		this.pricingRules = pricingRules;
 		this.offers = offers;
@@ -33,30 +34,31 @@ public class CheckoutSystem {
 	}
 	
 	public int calculateTotalPrice() {	
-		Map<ItemCodeEnum, PricingRules> itemPricingRules = pricingRules.stream()
-																 .collect(
-																	toMap(PricingRules::getItemCode, 
-																	  pricingRule -> pricingRule));
+		Map<ItemCodeEnum, PricingRules> itemPricingRules = 
+				pricingRules.stream().collect(toMap(PricingRules::getItemCode, 
+													 pricingRule -> pricingRule));
 		
-		return (scannedItems.size() > 1) ? getTotalPriceWithOffers(itemPricingRules) : getPriceWIthItemDiscounts(itemPricingRules);
-
+		return (scannedItems.size() > 1) ? pricingWithOffersAndDiscounts(itemPricingRules) 
+										 : itemLevelPricingWithDiscounts(itemPricingRules);
 	}	
 
-	protected Integer getTotalPriceWithOffers(Map<ItemCodeEnum, PricingRules> itemPricingRules) {
-		return applyOffers() + getPriceWIthItemDiscounts(itemPricingRules);
+	protected Integer pricingWithOffersAndDiscounts(Map<ItemCodeEnum, PricingRules> itemPricingRules) {
+		return pricingWithOffers() + itemLevelPricingWithDiscounts(itemPricingRules);
 	}
 	
-	protected Integer getPriceWIthItemDiscounts(Map<ItemCodeEnum, PricingRules> itemPricingRules) {
+	protected Integer pricingWithOffers() {
+		return offers.stream().collect(summingInt(offer -> offer.getPrice(scannedItems)));
+	}
+	
+	
+	protected Integer itemLevelPricingWithDiscounts(Map<ItemCodeEnum, PricingRules> itemPricingRules) {
 		return scannedItems.stream().collect(summingInt(item -> getItemPrice(itemPricingRules, item)));
 	}
-
-	protected Integer applyOffers() {		
-		return offers.stream().collect(summingInt(offer -> offer.getPriceAfterOffers(scannedItems)));
-	}
-
+	
 	protected Integer getItemPrice(Map<ItemCodeEnum, PricingRules> itemPricingRules, Item item) {
 		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
 	}
+	
 	
 	public int getScannedItemCount(){
 		return scannedItems.size();

@@ -19,6 +19,10 @@ public class Item {
 		this.quantity = this.quantity + adjustQuantity;
 	}
 	
+	public void resetQuantity(){
+		quantity = 0;
+	}
+	
 	/**
 	 * Equals method.
 	 */
