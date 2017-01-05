@@ -43,7 +43,14 @@ public class CheckoutSystem {
 	}	
 
 	protected Integer pricingWithOffersAndDiscounts(Map<ItemCodeEnum, PricingRule> itemPricingRules) {
-		return pricingWithOffers() + itemLevelPricingWithDiscounts(itemPricingRules);
+		Integer priceWithItemDiscounts = itemLevelPricingWithDiscounts(itemPricingRules);
+		Integer priceWithOffersAndDiscounts =  pricingWithOffers() + itemLevelPricingWithDiscounts(itemPricingRules);
+		
+		return fetchLowestCheckoutPrice(priceWithItemDiscounts, priceWithOffersAndDiscounts);		
+	}
+
+	private Integer fetchLowestCheckoutPrice(Integer priceWithItemDiscounts, Integer priceWithOffersAndDiscounts) {
+		return priceWithItemDiscounts > priceWithOffersAndDiscounts ? priceWithOffersAndDiscounts : priceWithItemDiscounts;
 	}
 	
 	protected Integer pricingWithOffers() {
