@@ -12,16 +12,16 @@ import java.util.Set;
 import com.clean.code.checkout.item.Item;
 import com.clean.code.checkout.item.ItemCodeEnum;
 import com.clean.code.checkout.item.Offer;
-import com.clean.code.checkout.price.PricingRules;
+import com.clean.code.checkout.price.PricingRule;
 
 public class CheckoutSystem {
 	
 	private Set<Item> scannedItems;
-	private List<PricingRules> pricingRules;
+	private List<PricingRule> pricingRules;
 	private List<Offer> offers;
 	
 	
-	public CheckoutSystem(List<PricingRules> pricingRules, List<Offer> offers){
+	public CheckoutSystem(List<PricingRule> pricingRules, List<Offer> offers){
 		this.pricingRules = pricingRules;
 		this.offers = offers;
 		scannedItems = new HashSet<>();
@@ -34,15 +34,15 @@ public class CheckoutSystem {
 	}
 	
 	public int calculateTotalPrice() {	
-		Map<ItemCodeEnum, PricingRules> itemPricingRules = 
-				pricingRules.stream().collect(toMap(PricingRules::getItemCode, 
+		Map<ItemCodeEnum, PricingRule> itemPricingRules = 
+				pricingRules.stream().collect(toMap(PricingRule::getItemCode, 
 													 pricingRule -> pricingRule));
 		
 		return (scannedItems.size() > 1) ? pricingWithOffersAndDiscounts(itemPricingRules) 
 										 : itemLevelPricingWithDiscounts(itemPricingRules);
 	}	
 
-	protected Integer pricingWithOffersAndDiscounts(Map<ItemCodeEnum, PricingRules> itemPricingRules) {
+	protected Integer pricingWithOffersAndDiscounts(Map<ItemCodeEnum, PricingRule> itemPricingRules) {
 		return pricingWithOffers() + itemLevelPricingWithDiscounts(itemPricingRules);
 	}
 	
@@ -51,11 +51,11 @@ public class CheckoutSystem {
 	}
 	
 	
-	protected Integer itemLevelPricingWithDiscounts(Map<ItemCodeEnum, PricingRules> itemPricingRules) {
+	protected Integer itemLevelPricingWithDiscounts(Map<ItemCodeEnum, PricingRule> itemPricingRules) {
 		return scannedItems.stream().collect(summingInt(item -> getItemPrice(itemPricingRules, item)));
 	}
 	
-	protected Integer getItemPrice(Map<ItemCodeEnum, PricingRules> itemPricingRules, Item item) {
+	protected Integer getItemPrice(Map<ItemCodeEnum, PricingRule> itemPricingRules, Item item) {
 		return itemPricingRules.get(item.getCode()).getPrice(item.getQuantity());
 	}
 	

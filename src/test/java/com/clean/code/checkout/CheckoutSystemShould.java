@@ -1,7 +1,7 @@
 package com.clean.code.checkout;
 
-import static org.junit.Assert.*;
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import com.clean.code.checkout.item.Discount;
 import com.clean.code.checkout.item.Item;
 import com.clean.code.checkout.item.ItemCodeEnum;
 import com.clean.code.checkout.item.Offer;
-import com.clean.code.checkout.price.PricingRules;
+import com.clean.code.checkout.price.PricingRule;
 
 public class CheckoutSystemShould {
 	
@@ -29,19 +29,19 @@ public class CheckoutSystemShould {
 		itemD = new Item(ItemCodeEnum.D);
 		
 		Discount discount = new Discount(3, 130);
-		PricingRules pricingForItemA = new PricingRules(ItemCodeEnum.A, 50, discount);
+		PricingRule pricingForItemA = new PricingRule(ItemCodeEnum.A, 50, discount);
 		
 		discount = new Discount(2, 45);
-		PricingRules pricingForItemB = new PricingRules(ItemCodeEnum.B, 30, discount);
+		PricingRule pricingForItemB = new PricingRule(ItemCodeEnum.B, 30, discount);
 		
-		PricingRules pricingForItemC = new PricingRules(ItemCodeEnum.C, 20, null);
-		PricingRules pricingForItemD = new PricingRules(ItemCodeEnum.D, 15, null);
+		PricingRule pricingForItemC = new PricingRule(ItemCodeEnum.C, 20, null);
+		PricingRule pricingForItemD = new PricingRule(ItemCodeEnum.D, 15, null);
 		
 		Offer offer = new Offer(asList(ItemCodeEnum.A, ItemCodeEnum.B), 70);
+		
 		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB, 
-												   pricingForItemC, pricingForItemD), asList(offer));
-		
-		
+												   pricingForItemC, pricingForItemD), 
+											asList(offer));		
 	}
 	
 	@After
