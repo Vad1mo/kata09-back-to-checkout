@@ -117,4 +117,10 @@ public class CheckoutSystemShould {
 		checkoutSystem.scan(itemA, itemB);
 		assertEquals(70, checkoutSystem.calculateTotalPrice());
 	}
+	
+	@Test
+	public void return_45_for_item_B_and_item_C(){
+		checkoutSystem.scan(itemB, itemC);
+		assertEquals(45, checkoutSystem.calculateTotalPrice());
+	}
 }
