@@ -37,8 +37,9 @@ public class CheckoutSystemShould {
 		PricingRules pricingForItemC = new PricingRules(ItemCodeEnum.C, 20, null);
 		PricingRules pricingForItemD = new PricingRules(ItemCodeEnum.D, 15, null);
 		
+		Offer offer = new Offer(asList(ItemCodeEnum.A, ItemCodeEnum.B), 70);
 		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB, 
-												   pricingForItemC, pricingForItemD));
+												   pricingForItemC, pricingForItemD), asList(offer));
 		
 		
 	}

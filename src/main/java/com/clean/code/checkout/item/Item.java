@@ -15,6 +15,10 @@ public class Item {
 		quantity = quantity + 1;
 	}
 	
+	public void adjustQuantity(int adjustQuantity){
+		this.quantity = this.quantity + adjustQuantity;
+	}
+	
 	/**
 	 * Equals method.
 	 */
