@@ -123,4 +123,11 @@ public class CheckoutSystemShould {
 		checkoutSystem.scan(itemB, itemC);
 		assertEquals(45, checkoutSystem.calculateTotalPrice());
 	}
+	
+	// Price with Offers = 75, Price with Item Discounts = 65.
+	@Test
+	public void return_lowest_price_65_for_2_item_B_and_1_item_C(){
+		checkoutSystem.scan(itemB, itemC, itemB);
+		assertEquals(65, checkoutSystem.calculateTotalPrice());
+	}
 }
