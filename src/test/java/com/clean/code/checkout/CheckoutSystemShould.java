@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.clean.code.checkout.item.Discount;
 import com.clean.code.checkout.item.Item;
 import com.clean.code.checkout.item.ItemCodeEnum;
+import com.clean.code.checkout.item.Offer;
 import com.clean.code.checkout.price.PricingRules;
 
 public class CheckoutSystemShould {
@@ -37,13 +38,16 @@ public class CheckoutSystemShould {
 		PricingRules pricingForItemD = new PricingRules(ItemCodeEnum.D, 15, null);
 		
 		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB, 
-												   pricingForItemC, pricingForItemD));		
+												   pricingForItemC, pricingForItemD));
+		
+		
 	}
 	
 	@After
 	public void tearDown(){
 		itemA = null;
 		itemB = null;
+		checkoutSystem = null;
 	}
 	
 	@Test
@@ -108,7 +112,14 @@ public class CheckoutSystemShould {
 	
 	@Test
 	public void return_2_whens_only_2_items_are_scanned(){
+		
 		checkoutSystem.scan(itemA, itemB);
 		assertEquals(2, checkoutSystem.getScannedItemCount());
+	}
+	
+	@Test
+	public void return_70_for_item_A_and_item_B(){
+		checkoutSystem.scan(itemA, itemB);
+		assertEquals(70, checkoutSystem.calculateTotalPrice());
 	}
 }
