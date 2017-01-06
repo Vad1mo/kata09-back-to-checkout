@@ -2,6 +2,7 @@ package com.clean.code.checkout;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static com.clean.code.checkout.item.ItemCodeEnum.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,7 +10,7 @@ import org.junit.Test;
 
 import com.clean.code.checkout.item.Discount;
 import com.clean.code.checkout.item.Item;
-import com.clean.code.checkout.item.ItemCodeEnum;
+
 import com.clean.code.checkout.item.Offer;
 import com.clean.code.checkout.price.PricingRule;
 
@@ -23,22 +24,22 @@ public class CheckoutSystemShould {
 	
 	@Before
 	public void setUp(){				
-		itemA = new Item(ItemCodeEnum.A);
-		itemB = new Item(ItemCodeEnum.B);
-		itemC = new Item(ItemCodeEnum.C);
-		itemD = new Item(ItemCodeEnum.D);
+		itemA = new Item(A);
+		itemB = new Item(B);
+		itemC = new Item(C);
+		itemD = new Item(D);
 		
 		Discount discount = new Discount(3, 130);
-		PricingRule pricingForItemA = new PricingRule(ItemCodeEnum.A, 50, discount);
+		PricingRule pricingForItemA = new PricingRule(A, 50, discount);
 		
 		discount = new Discount(2, 45);
-		PricingRule pricingForItemB = new PricingRule(ItemCodeEnum.B, 30, discount);
+		PricingRule pricingForItemB = new PricingRule(B, 30, discount);
 		
-		PricingRule pricingForItemC = new PricingRule(ItemCodeEnum.C, 20, null);
-		PricingRule pricingForItemD = new PricingRule(ItemCodeEnum.D, 15, null);
+		PricingRule pricingForItemC = new PricingRule(C, 20, null);
+		PricingRule pricingForItemD = new PricingRule(D, 15, null);
 		
-		Offer offerForAandB = new Offer(asList(ItemCodeEnum.A, ItemCodeEnum.B), 70);
-		Offer offerForBandC = new Offer(asList(ItemCodeEnum.B, ItemCodeEnum.C), 45);
+		Offer offerForAandB = new Offer(asList(A, B), 70);
+		Offer offerForBandC = new Offer(asList(B, C), 45);
 		checkoutSystem = new CheckoutSystem(asList(pricingForItemA, pricingForItemB, 
 												   pricingForItemC, pricingForItemD), 
 											asList(offerForAandB, offerForBandC));		
